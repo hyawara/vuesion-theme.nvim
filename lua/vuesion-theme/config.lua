@@ -14,6 +14,7 @@ M.defaults = {
     variables = {},
     sidebars = "dark",
     floats = "dark",
+    underline = false,
   },
   dim_inactive = false,
   lualine_bold = false,

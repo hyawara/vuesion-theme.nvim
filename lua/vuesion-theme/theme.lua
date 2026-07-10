@@ -18,6 +18,15 @@ function M.setup(opts)
 
   util.resolve(highlights)
 
+  if not opts.styles.underline then
+    for _, hl in pairs(highlights) do
+      hl.underline = nil
+      hl.undercurl = nil
+      hl.underdotted = nil
+      hl.underdashed = nil
+    end
+  end
+
   if opts.on_highlights then
     opts.on_highlights(highlights, c)
   end
