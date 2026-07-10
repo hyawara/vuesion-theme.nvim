@@ -34,12 +34,14 @@ M.ui = {
   -- 故改用橙色，与 snacks picker 的 SnacksPickerMatch 统一“匹配”语义。
   completion_match = "#f9846c",
   bg_sidebar = "#202831",
-  -- 搜索高亮走“冷底 + 暖焦点”护眼配色，刻意避开代码里遍地的绿色（字符串/函数声明/操作符），
-  -- 也避开旧版刺眼的芥末黄(#7a6300)与荧光亮黄(#f3c811)。中低饱和、中等明度，久看不累：
-  --   bg_search         柔青蓝 → 所有匹配（Search），冷静打底，与深蓝灰背景同冷调但更亮
-  --   bg_search_current 柔琥珀 → 当前匹配（IncSearch/CurSearch），暖色聚焦，冷暖对比一眼锁定
-  bg_search = "#2d5a66",
-  bg_search_current = "#e0a458",
+  -- 搜索高亮走“灰底 + 冷光点睛”路线（整体承 LspInlayHint 的灰白基调，克制不喧宾）：
+  --   1) 所有匹配（Search/FlashMatch）用中性灰底 + 亮白字 → 无色相、后退、低调，不抢眼；
+  --   2) 当前匹配（IncSearch/CurSearch/FlashCurrent）用稍亮的蓝灰底 + 低饱和淡蓝字 + bold →
+  --      底仍是灰、观感统一，仅以一点冷光提神；且底色避开 bg_selection 的中性灰，语义不混。
+  bg_search = "#434e5b",
+  bg_search_current = "#4a6076",
+  -- Flash 跳转“要敲的键”专用淡红：在匹配底上用低饱和淡红跳出，醒目但不刺眼。
+  flash_label = "#e06c75",
   bg_visual = "#303a45",
   bg_selection = "#9ca2aa",
   bg_caret = "#182029",

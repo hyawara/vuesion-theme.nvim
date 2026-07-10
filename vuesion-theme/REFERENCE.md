@@ -197,7 +197,8 @@ IntelliJ 层次:           Neovim 层次:
 | `bg_highlight` | `#303a45` | selectionBackground + INDENT_GUIDE                 |
 | `bg_popup`     | `#0c1014` | CompletionPopup                                    |
 | `bg_sidebar`   | `#202831` | ToolWindow.Header.background                       |
-| `bg_search`    | `#90e0a4` | SearchMatch.startBackground                        |
+| `bg_search`         | `#434e5b` | 搜索所有匹配灰底（灰底+冷光点睛方案，中性灰 + 亮字）|
+| `bg_search_current` | `#4a6076` | 搜索当前匹配蓝灰底（灰底+冷光点睛方案，配淡蓝字）   |
 | `bg_visual`    | `#303a45` | selectionBackground                                |
 | `bg_selection` | `#9ca2aa` | SELECTION_BACKGROUND                               |
 | `bg_caret`     | `#182029` | CARET_ROW_COLOR                                    |
