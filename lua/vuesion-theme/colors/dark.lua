@@ -29,9 +29,17 @@ M.ui = {
   bg_float = "#0c1014",
   bg_highlight = "#303a45",
   bg_popup = "#0c1014",
-  completion_match = "#0d9660",
+  -- 补全菜单“匹配字符”高亮色。IntelliJ 原值为深绿 #0d9660，
+  -- 但深绿在深色弹窗上对比度低、且与语法绿系（字符串/操作符）混淆，
+  -- 故改用橙色，与 snacks picker 的 SnacksPickerMatch 统一“匹配”语义。
+  completion_match = "#f9846c",
   bg_sidebar = "#202831",
-  bg_search = "#7a6300",
+  -- 搜索高亮走“冷底 + 暖焦点”护眼配色，刻意避开代码里遍地的绿色（字符串/函数声明/操作符），
+  -- 也避开旧版刺眼的芥末黄(#7a6300)与荧光亮黄(#f3c811)。中低饱和、中等明度，久看不累：
+  --   bg_search         柔青蓝 → 所有匹配（Search），冷静打底，与深蓝灰背景同冷调但更亮
+  --   bg_search_current 柔琥珀 → 当前匹配（IncSearch/CurSearch），暖色聚焦，冷暖对比一眼锁定
+  bg_search = "#2d5a66",
+  bg_search_current = "#e0a458",
   bg_visual = "#303a45",
   bg_selection = "#9ca2aa",
   bg_caret = "#182029",

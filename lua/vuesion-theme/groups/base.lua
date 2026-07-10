@@ -26,9 +26,12 @@ function M.get(c, opts)
     LineNrAbove = { fg = c.line_number },
     LineNrBelow = { fg = c.line_number },
     Conceal = { fg = c.fg_dark },
-    CurSearch = { fg = c.bg, bg = c.green_light },
-    IncSearch = { fg = c.bg, bg = c.green_light },
-    Search = { bg = c.bg_search, fg = c.bg },
+    -- 搜索高亮走“冷底 + 暖焦点”护眼配色，避开代码里遍地的绿色（字符串/函数声明/操作符）。
+    -- 当前匹配（CurSearch/IncSearch）柔琥珀底较亮 → 配深色前景；
+    -- 所有匹配（Search）柔青蓝底偏暗 → 配亮色前景，二者均保证足够对比。
+    CurSearch = { fg = c.bg, bg = c.bg_search_current },
+    IncSearch = { fg = c.bg, bg = c.bg_search_current },
+    Search = { bg = c.bg_search, fg = c.fg },
     Substitute = { fg = c.bg, bg = c.orange },
     MatchParen = { bg = c.bg_highlight, bold = true },
 
@@ -246,9 +249,13 @@ function M.get(c, opts)
     NoiceMini = { fg = c.fg_dim },
 
     -- ██  Flash
+    -- 跳转标签必须带底色才醒目，且与搜索共用“冷底 + 暖焦点”护眼语言：
+    --   Label（要敲的键）用柔琥珀焦点色最抢眼，Match（候选范围）用柔青蓝打底，
+    --   backdrop 压暗其余文字。均强制前景色保证可读。
     FlashBackdrop = { fg = c.fg_dark },
-    FlashLabel = { fg = c.blue, bold = true },
-    FlashMatch = { fg = c.blue, bold = true },
+    FlashLabel = { fg = c.bg, bg = c.bg_search_current, bold = true },
+    FlashMatch = { fg = c.fg, bg = c.bg_search, bold = true },
+    FlashCurrent = { fg = c.bg, bg = c.bg_search_current, bold = true },
 
     -- ██  Indent Blankline
     IndentBlanklineChar = { fg = c.indent_guide },
