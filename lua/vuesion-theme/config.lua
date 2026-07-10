@@ -1,3 +1,6 @@
+-- 配置中心：默认值定义 + 用户配置合并。
+--   setup()  写入全局 state（keep 语义：用户值优先，缺失项补默认）。
+--   extend() 每次加载时生成最终配置（force 语义：入参 > state > 默认）。
 local M = {}
 
 M.defaults = {

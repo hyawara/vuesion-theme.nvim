@@ -3,6 +3,8 @@ local colors = require("vuesion-theme.colors")
 local groups = require("vuesion-theme.groups")
 local util = require("vuesion-theme.util")
 
+-- 装配线：把调色板、高亮组、工具函数串起来，最终逐个调用 nvim_set_hl 生效。
+-- 流程：加载调色板 → （可选）设置终端 16 色 → 组装高亮 → resolve 归一 → on_highlights 回调 → 应用。
 local M = {}
 
 function M.setup(opts)

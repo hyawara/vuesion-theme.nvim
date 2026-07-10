@@ -1,3 +1,6 @@
+-- 高亮组分发器：决定加载哪些 group 文件并合并结果。
+--   核心组（base/syntax/treesitter/semantic_tokens）永远加载；
+--   插件组支持三种开启方式：all 全开 / auto 自动检测已装插件 / 手动逐个开。
 local M = {
   plugins = {
     ["snacks.nvim"] = "snacks",
@@ -56,6 +59,7 @@ function M.setup(c, opts)
   local plugin_opts = opts.plugins or {}
   local groups = {
     base = true,
+    syntax = true,
     treesitter = true,
     semantic_tokens = true,
   }

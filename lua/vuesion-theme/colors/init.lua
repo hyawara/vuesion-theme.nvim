@@ -1,5 +1,7 @@
 local config = require("vuesion-theme.config")
 
+-- 调色板加载器：读取 colors/dark.lua 纯数据，展平子表到顶层，
+-- 计算衍生色（bg_dim/fg_dim 等），应用 transparent / dim_inactive，最后跑 on_colors 回调。
 local M = {}
 
 local cache = {}

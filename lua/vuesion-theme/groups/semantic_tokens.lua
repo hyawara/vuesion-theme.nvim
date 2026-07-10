@@ -37,7 +37,8 @@ function M.get(c, opts)
     ["@lsp.typemod.function.readonly"] = { fg = c.function_decl },
     ["@lsp.typemod.method.abstract"] = { fg = c.function_decl, italic = true, underline = true },
     ["@lsp.typemod.method.declaration"] = { fg = c.function_decl, italic = true, underline = true },
-    ["@lsp.typemod.method.static"] = { fg = c.predefined, italic = true },
+    -- DEFAULT_STATIC_METHOD 原始只有 FONT_TYPE=2（斜体），前景继承 INSTANCE_METHOD 的白色。
+    ["@lsp.typemod.method.static"] = { fg = c["function"], italic = true, underline = true },
     ["@lsp.typemod.parameter.declaration"] = { fg = c.parameter },
     ["@lsp.typemod.property.declaration"] = { fg = c["function"], underline = true },
     ["@lsp.typemod.property.readonly"] = { fg = c.constant, underline = true },

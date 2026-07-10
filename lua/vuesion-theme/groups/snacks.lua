@@ -2,18 +2,9 @@ local M = {}
 
 M.url = "https://github.com/folke/snacks.nvim"
 
+-- snacks.nvim 的 picker（文件/命令搜索面板）高亮适配。
+-- 面板主体走 bg_float，输入框走更深的 bg_dark，选中项走 blue_dark，与补全菜单风格统一。
 function M.get(c, opts)
-  local snacks = require("snacks.picker.config")
-  local stylus = snacks.styles
-
-  local function get_hl(name)
-    local ok, hl = pcall(vim.api.nvim_get_hl, 0, { name = name, link = false })
-    if ok and hl then
-      return hl
-    end
-    return {}
-  end
-
   return {
     SnacksPicker = { fg = c.fg, bg = c.bg_float },
     SnacksPickerBorder = { fg = c.border_highlight, bg = c.bg_float },

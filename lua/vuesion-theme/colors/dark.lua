@@ -1,3 +1,6 @@
+-- 纯数据文件：所有色值的唯一来源。
+-- 语法色直接对应 IntelliJ vuesion_theme.xml 的 DEFAULT_* token；
+-- UI 色对应 vuesion_theme.theme.json。改色只需动这里，不碰逻辑代码。
 local M = {}
 
 M.syntax = {
@@ -10,7 +13,6 @@ M.syntax = {
   constant = "#3d8beb",
   parameter = "#8dc3f9",
   operator = "#40bf77",
-  type = "#3d8beb",
   tag = "#f43b6c",
   attribute = "#40bf77",
   comment = "#6f7a86",

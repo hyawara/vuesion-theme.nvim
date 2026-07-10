@@ -1,3 +1,6 @@
+-- lualine 状态栏主题。
+--   a 段（模式指示）按 Vim 模式变色；b/c/x/y/z 段统一走 bg_highlight / bg 两级背景。
+--   末尾直接 M.get("dark")，让 require("lualine.themes.vuesion-theme") 可直接拿到表。
 local M = {}
 
 function M.get(style)

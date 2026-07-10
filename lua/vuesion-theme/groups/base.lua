@@ -70,8 +70,6 @@ function M.get(c, opts)
     SignColumnSB = { bg = c.bg_sidebar },
     FoldColumn = { fg = c.fg_gutter, bg = c.bg },
     Folded = { fg = c.folded, bg = c.bg_highlight },
-    LineNrAbove = { fg = c.line_number },
-    LineNrBelow = { fg = c.line_number },
 
     -- ██  Special
     NonText = { fg = c.fg_gutter },
@@ -141,7 +139,6 @@ function M.get(c, opts)
     -- ██  Treesitter context / rainbow
     TreesitterContext = { bg = c.bg_highlight },
     TreesitterContextLineNumber = { fg = c.line_number_active, bg = c.bg_highlight },
-    NormalFloat = { fg = c.fg, bg = c.bg_float },
     RainbowDelimiterRed = { fg = c.red },
     RainbowDelimiterYellow = { fg = c.yellow },
     RainbowDelimiterBlue = { fg = c.blue },
@@ -296,7 +293,6 @@ function M.get(c, opts)
     DashboardShortcut = { fg = c.blue },
     DashboardDesc = { fg = c.fg_dim },
     DashboardKey = { fg = c.orange },
-    DashboardFooter = { fg = c.fg_dark },
 
     -- ██  Mini
     MiniCursorword = { bg = c.bg_highlight },
@@ -361,12 +357,8 @@ function M.get(c, opts)
     RenderMarkdownChecked = { fg = c.green },
     RenderMarkdownUnchecked = { fg = c.fg_dim },
 
-    -- ██  Todo / Notes
+    -- ██  Todo（传统正则组；@comment.todo 等语义组统一在 treesitter.lua 定义）
     Todo = { fg = c.yellow, bold = true },
-    ["@comment.todo"] = { fg = c.yellow, bold = true },
-    ["@comment.note"] = { fg = c.blue, bold = true },
-    ["@comment.warning"] = { fg = c.warning, bold = true },
-    ["@comment.error"] = { fg = c.error, bold = true },
 
     -- ██  Health
     healthError = { fg = c.error },

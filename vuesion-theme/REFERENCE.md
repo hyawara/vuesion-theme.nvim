@@ -113,7 +113,11 @@ IntelliJ 层次:           Neovim 层次:
 | 2  | 波浪线     | `undercurl = true`   |
 | 3  | 删除线     | `strikethrough = true` |
 | 4  | 盒状       | 不支持               |
-| 5  | 斜体效果   | 作为 italic 处理     |
+| 5  | 点状下划线 | 近似为 `underline = true`（Neovim 亦可用 `underdotted`） |
+
+> 注意：**斜体/粗体由 `FONT_TYPE` 控制，不属于 `EFFECT_TYPE`**。
+> vuesion 中方法/字段声明（`DEFAULT_INSTANCE_METHOD` 等）用 `EFFECT_TYPE=5`
+> 表现为点状下划线，本移植统一近似为普通 `underline`。
 
 ---
 
@@ -217,7 +221,7 @@ IntelliJ 层次:           Neovim 层次:
 | `DEFAULT_NUMBER` | `#f9846c` | - | `@number`, `@number.float`, `@boolean` | `number` |
 | `DEFAULT_FUNCTION_DECLARATION` | `#90e0a4` | 斜体+下划线 | `@function` | `function_decl` |
 | `DEFAULT_INSTANCE_METHOD` | `#ffffff` | 下划线 | `@function.method`, `@function.method.call` | `["function"]` |
-| `DEFAULT_STATIC_METHOD` | 继承 | 斜体 | `@lsp.typemod.method.static` | `predefined` (斜体) |
+| `DEFAULT_STATIC_METHOD` | `#ffffff`(继承 INSTANCE_METHOD) | 斜体 | `@lsp.typemod.method.static` | `["function"]` (白色+斜体+下划线) |
 | `DEFAULT_CLASS_NAME` | `#f3c811` | - | `@type`, `@type.definition`, `@lsp.type.class`, `@lsp.type.enum`, `@lsp.type.struct` | `class` |
 | `DEFAULT_INTERFACE_NAME` | `#f3c811` | - | `@lsp.type.interface` | `class` |
 | `DEFAULT_CONSTANT` | `#3d8beb` | - | `@constant`, `@lsp.type.enumMember`, `@lsp.typemod.variable.readonly` | `constant` |
@@ -320,8 +324,8 @@ SnacksPickerCellLabel, SnacksPickerScrollbar, SnacksPickerScrollbarThumb
 ```lua
 BlinkCmpMenu, BlinkCmpMenuBorder, BlinkCmpMenuSelection
 BlinkCmpScrollBarThumb, BlinkCmpScrollBarGutter
-BlinkCmpDoc, BlinkCmpDocBorder, BlinkCmpDocSeparator
-BlinkCmpSignatureHelp, BlinkCmpSignatureHelpBorder
+BlinkCmpDoc, BlinkCmpDocBorder, BlinkCmpDocSeparator, BlinkCmpDocCursorLine
+BlinkCmpSignatureHelp, BlinkCmpSignatureHelpBorder, BlinkCmpSignatureHelpActiveParameter
 BlinkCmpLabel, BlinkCmpLabelDeprecated, BlinkCmpLabelMatch
 BlinkCmpLabelDetail, BlinkCmpLabelDescription
 BlinkCmpKind, BlinkCmpSource, BlinkCmpGhostText
@@ -416,6 +420,7 @@ GitSignsUntracked, GitSignsCurrentLineBlame
 | `lua/vuesion-theme/colors/dark.lua` | **纯数据**：所有颜色值定义 | **是** |
 | `lua/vuesion-theme/groups/init.lua` | 分发器：插件检测 + 合并 | 否 |
 | `lua/vuesion-theme/groups/base.lua` | 编辑器核心 + 大部分插件集成 | 否 |
+| `lua/vuesion-theme/groups/syntax.lua` | 传统 Vim 正则语法组（无 treesitter parser 时的 fallback） | 否 |
 | `lua/vuesion-theme/groups/treesitter.lua` | `@` 语义组定义 | 否 |
 | `lua/vuesion-theme/groups/semantic_tokens.lua` | LSP 语义令牌定义 | 否 |
 | `lua/vuesion-theme/groups/blink.lua` | blink.cmp 专用 | 否 |

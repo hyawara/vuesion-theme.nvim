@@ -2,6 +2,15 @@ local M = {}
 
 M.url = "https://github.com/Saghen/blink.cmp"
 
+-- blink.cmp（补全引擎）高亮适配。
+--
+-- 补全菜单里每一项左侧的 kind 图标（函数/类/变量…）有两种着色策略：
+--   1. "theme"（默认）：按本主题的语义色给图标上色，观感更丰富，与语法高亮统一。
+--   2. "blink"：回落到 blink 自带的默认链（统一走 PmenuKind），风格更朴素。
+-- 通过 setup({ plugins = { blink_kind_hl = "blink" } }) 切换。
+--
+-- 下面这份 kind 列表覆盖 blink 官方 25 种 CompletionItemKind，
+-- 外加 Array/Object/Component/Fragment/Null/Number/Boolean 等 LSP 扩展类型（多定义无害）。
 local kind_groups = {
   "Text",
   "Method",
@@ -98,8 +107,10 @@ function M.get(c, opts)
     BlinkCmpDoc = { fg = c.fg, bg = c.bg_float },
     BlinkCmpDocBorder = { fg = c.border_highlight, bg = c.bg_float },
     BlinkCmpDocSeparator = { fg = c.border, bg = c.bg_highlight },
+    BlinkCmpDocCursorLine = { bg = c.bg_highlight },
     BlinkCmpSignatureHelp = { fg = c.fg, bg = c.bg_float },
     BlinkCmpSignatureHelpBorder = { fg = c.border_highlight, bg = c.bg_float },
+    BlinkCmpSignatureHelpActiveParameter = { bg = c.bg_highlight, bold = true },
     BlinkCmpLabel = { fg = c.fg },
     BlinkCmpLabelDeprecated = { fg = c.fg_dark, strikethrough = true },
     BlinkCmpLabelMatch = { fg = c.completion_match, bold = true },

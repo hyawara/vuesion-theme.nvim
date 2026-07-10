@@ -1,3 +1,8 @@
+-- 颜色工具集：
+--   blend  按 alpha 混合两色（前景叠底）。
+--   lighten/darken  提亮 / 压暗一个 hex 色。
+--   resolve  把 { style = {...} } 旧式写法归一成 nvim_set_hl 认识的扁平字段。
+--   template  简单的 $var 字符串插值。
 local M = {}
 
 function M.blend(fg, bg, alpha)
