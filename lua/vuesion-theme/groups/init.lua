@@ -9,10 +9,12 @@ local M = {
 }
 
 local function plugin_available(name)
-  local lazy = require("lazy.core.config")
-  if lazy.plugins and lazy.plugins[name] then
+  -- lazy.nvim 存在时优先读它的插件表；没有 lazy 时不应让主题加载失败。
+  local ok, lazy = pcall(require, "lazy.core.config")
+  if ok and lazy.plugins and lazy.plugins[name] then
     return true
   end
+
   return vim.fn.exists(":Lazy") == 0 and pcall(require, name)
 end
 
@@ -24,42 +26,60 @@ local function load(module)
   return nil
 end
 
+local function enable_all(groups)
+  for _, module in pairs(M.plugins) do
+    groups[module] = true
+  end
+end
+
+local function enable_auto(groups)
+  for name, module in pairs(M.plugins) do
+    if plugin_available(name) then
+      groups[module] = true
+    end
+  end
+end
+
+local function enable_manual(groups, plugin_opts)
+  for key, enabled in pairs(plugin_opts) do
+    if type(enabled) == "boolean" and enabled then
+      for _, module in pairs(M.plugins) do
+        if module == key then
+          groups[key] = true
+        end
+      end
+    end
+  end
+end
+
 function M.setup(c, opts)
+  local plugin_opts = opts.plugins or {}
   local groups = {
     base = true,
     treesitter = true,
     semantic_tokens = true,
   }
 
-  if opts.plugins.all then
-    for _, name in ipairs(vim.tbl_keys(M.plugins)) do
-      groups[M.plugins[name]] = true
-    end
-  elseif opts.plugins.auto then
-    for name, module in pairs(M.plugins) do
-      if plugin_available(name) then
-        groups[module] = true
-      end
-    end
+  if plugin_opts.all then
+    enable_all(groups)
   end
 
-  for name, enabled in pairs(opts.plugins) do
-    if type(enabled) == "boolean" and enabled then
-      for pname, module in pairs(M.plugins) do
-        if module == name then
-          groups[name] = true
-        end
-      end
-    end
+  if plugin_opts.auto then
+    enable_auto(groups)
   end
+
+  enable_manual(groups, plugin_opts)
 
   local results = {}
   for group in pairs(groups) do
     local mod = load(group)
     if mod and mod.get then
-      local hl = mod.get(c, opts)
-      for k, v in pairs(hl) do
-        results[k] = v
+      -- 某些插件分组会读取插件内部模块；插件未安装或 API 变动时跳过，不拖垮 colorscheme。
+      local ok, hl = pcall(mod.get, c, opts)
+      if ok and type(hl) == "table" then
+        for k, v in pairs(hl) do
+          results[k] = v
+        end
       end
     end
   end

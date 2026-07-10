@@ -10,6 +10,7 @@ function M.get(c, opts)
   local groups = {
     -- ██  Editor
     Normal = { fg = c.fg, bg = c.bg },
+    NormalNC = { fg = c.fg, bg = dim_inactive and c.bg_dim or c.bg },
     NormalFloat = { fg = c.fg, bg = c.bg_float },
     NormalSB = { fg = c.fg_sidebar, bg = c.bg_sidebar },
     FloatBorder = { fg = c.border_highlight, bg = c.bg_float },
@@ -32,7 +33,7 @@ function M.get(c, opts)
     MatchParen = { bg = c.bg_highlight, bold = true },
 
     -- ██  Visual / Selection
-    Visual = { bg = c.bg_visual },
+    Visual = { fg = c.selection_fg, bg = c.bg_selection },
     VisualNOS = { bg = c.bg_highlight },
     WildMenu = { fg = c.blue, bg = c.bg_highlight },
 

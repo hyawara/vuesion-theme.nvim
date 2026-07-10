@@ -2,106 +2,132 @@ local M = {}
 
 M.url = "https://github.com/nvim-treesitter/nvim-treesitter"
 
+-- 将 IntelliJ 的 DEFAULT_* 语义 token 映射到 Neovim Treesitter capture。
+-- 这里尽量只处理“语言无关”的核心语法；语言/插件专用适配后续再分文件补。
 function M.get(c, opts)
-  local styles = opts.styles
+  local styles = opts.styles or {}
+
+  local function with_style(base, extra)
+    return vim.tbl_extend("force", {}, base, extra or {})
+  end
+
+  local comment = with_style({ fg = c.comment }, styles.comments)
+  local doc_comment = with_style({ fg = c.doc_comment }, styles.comments)
+  local keyword = with_style({ fg = c.keyword }, styles.keywords)
+  local function_decl = with_style({ fg = c.function_decl, italic = true, underline = true }, styles.functions)
+  local function_call = with_style({ fg = c["function"] }, styles.functions)
+  local method = with_style({ fg = c["function"], underline = true }, styles.functions)
+  local variable = with_style({ fg = c.fg }, styles.variables)
 
   return {
-    -- ██  Comments
-    ["@comment"] = { fg = c.comment, italic = true },
-    ["@comment.documentation"] = { fg = c.doc_comment, italic = true },
+    -- ██  注释：DEFAULT_LINE_COMMENT / DEFAULT_BLOCK_COMMENT / DEFAULT_DOC_COMMENT
+    ["@comment"] = comment,
+    ["@comment.documentation"] = doc_comment,
     ["@comment.error"] = { fg = c.error, italic = true },
     ["@comment.warning"] = { fg = c.warning, italic = true },
     ["@comment.todo"] = { fg = c.yellow, bold = true },
     ["@comment.note"] = { fg = c.blue, bold = true },
+    ["@comment.tag"] = { fg = c.predefined, bold = true, underline = true },
+    ["@comment.tag.doc"] = { fg = c.predefined, italic = true },
 
-    -- ██  Punctuation
+    -- ██  标点：DEFAULT_BRACES / DEFAULT_BRACKETS / DEFAULT_PARENTHS / DEFAULT_COMMA / DEFAULT_DOT
     ["@punctuation.delimiter"] = { fg = c.punctuation },
+    ["@punctuation.delimiter.semicolon"] = { fg = c.semicolon },
+    ["@punctuation.delimiter.dot"] = { fg = c.punctuation, italic = true },
     ["@punctuation.bracket"] = { fg = c.punctuation },
     ["@punctuation.special"] = { fg = c.punctuation },
 
-    -- ██  Constants
+    -- ██  常量：DEFAULT_CONSTANT / DEFAULT_PREDEFINED_SYMBOL
     ["@constant"] = { fg = c.constant },
     ["@constant.builtin"] = { fg = c.predefined },
     ["@constant.macro"] = { fg = c.predefined },
 
-    -- ██  Strings
+    -- ██  字符串：DEFAULT_STRING / DEFAULT_VALID_STRING_ESCAPE / DEFAULT_INVALID_STRING_ESCAPE
     ["@string"] = { fg = c.string },
     ["@string.regex"] = { fg = c.string },
+    ["@string.regexp"] = { fg = c.string },
     ["@string.escape"] = { fg = c.string },
+    ["@string.escape.invalid"] = { fg = c.string, sp = c.red, undercurl = true },
     ["@string.special"] = { fg = c.entity },
     ["@string.special.symbol"] = { fg = c.entity },
     ["@string.special.path"] = { fg = c.entity },
+    ["@string.special.url"] = { fg = c.blue, underline = true },
 
-    -- ██  Character
+    -- ██  字符与数字：DEFAULT_STRING / DEFAULT_ENTITY / DEFAULT_NUMBER
     ["@character"] = { fg = c.string },
     ["@character.special"] = { fg = c.entity },
-
-    -- ██  Numbers
     ["@number"] = { fg = c.number },
     ["@number.float"] = { fg = c.number },
     ["@boolean"] = { fg = c.number },
 
-    -- ██  Functions
-    ["@function"] = { fg = c.function_decl, italic = true, underline = true },
+    -- ██  函数：DEFAULT_FUNCTION_DECLARATION / DEFAULT_INSTANCE_METHOD / DEFAULT_PREDEFINED_SYMBOL
+    ["@function"] = function_decl,
     ["@function.builtin"] = { fg = c.predefined },
-    ["@function.call"] = { fg = c["function"] },
-    ["@function.method"] = { fg = c["function"], underline = true },
-    ["@function.method.call"] = { fg = c["function"] },
-    ["@constructor"] = { fg = c.yellow },
+    ["@function.call"] = function_call,
+    ["@function.macro"] = { fg = c.predefined },
+    ["@function.method"] = method,
+    ["@function.method.call"] = function_call,
+    ["@method"] = method,
+    ["@method.call"] = function_call,
+    ["@constructor"] = { fg = c.class },
     ["@constructor.ts"] = { fg = c.class },
 
-    -- ██  Parameters
+    -- ██  参数/字段/变量：DEFAULT_PARAMETER / DEFAULT_INSTANCE_FIELD / DEFAULT_LOCAL_VARIABLE
     ["@parameter"] = { fg = c.parameter },
     ["@parameter.reference"] = { fg = c.parameter },
-
-    -- ██  Fields
-    ["@field"] = { fg = c["function"], underline = true },
-    ["@property"] = { fg = c["function"], underline = true },
-
-    -- ██  Variables
-    ["@variable"] = { fg = c.fg },
-    ["@variable.builtin"] = { fg = c.predefined },
-    ["@variable.member"] = { fg = c["function"], underline = true },
     ["@variable.parameter"] = { fg = c.parameter },
+    ["@field"] = method,
+    ["@property"] = method,
+    ["@variable"] = variable,
+    ["@variable.builtin"] = { fg = c.predefined },
+    ["@variable.member"] = method,
 
-    -- ██  Keywords
-    ["@keyword"] = { fg = c.keyword, bold = true },
-    ["@keyword.function"] = { fg = c.keyword, bold = true },
-    ["@keyword.operator"] = { fg = c.keyword, bold = true },
-    ["@keyword.return"] = { fg = c.keyword, bold = true },
-    ["@conditional"] = { fg = c.keyword, bold = true },
-    ["@repeat"] = { fg = c.keyword, bold = true },
-    ["@debug"] = { fg = c.keyword, bold = true },
-    ["@exception"] = { fg = c.keyword, bold = true },
-    ["@include"] = { fg = c.keyword, bold = true },
-    ["@define"] = { fg = c.keyword, bold = true },
+    -- ██  关键字：DEFAULT_KEYWORD
+    ["@keyword"] = keyword,
+    ["@keyword.conditional"] = keyword,
+    ["@keyword.debug"] = keyword,
+    ["@keyword.directive"] = keyword,
+    ["@keyword.directive.define"] = keyword,
+    ["@keyword.exception"] = keyword,
+    ["@keyword.function"] = keyword,
+    ["@keyword.import"] = keyword,
+    ["@keyword.operator"] = keyword,
+    ["@keyword.repeat"] = keyword,
+    ["@keyword.return"] = keyword,
+    ["@conditional"] = keyword,
+    ["@repeat"] = keyword,
+    ["@debug"] = keyword,
+    ["@exception"] = keyword,
+    ["@include"] = keyword,
+    ["@define"] = keyword,
 
-    -- ██  Types
+    -- ██  类型：DEFAULT_CLASS_NAME / DEFAULT_INTERFACE_NAME / DEFAULT_PREDEFINED_SYMBOL
     ["@type"] = { fg = c.class },
     ["@type.builtin"] = { fg = c.predefined },
     ["@type.definition"] = { fg = c.class },
-    ["@type.qualifier"] = { fg = c.keyword, bold = true },
+    ["@type.qualifier"] = keyword,
 
-    -- ██  Storage / Modifiers
-    ["@storageclass"] = { fg = c.keyword, bold = true },
+    -- ██  修饰符/属性：DEFAULT_KEYWORD / DEFAULT_ATTRIBUTE / DEFAULT_METADATA
+    ["@storageclass"] = keyword,
     ["@attribute"] = { fg = c.attribute, italic = true },
-    ["@annotation"] = { fg = c.attribute, italic = true },
+    ["@annotation"] = { fg = c.predefined, italic = true },
     ["@decorator"] = { fg = c.attribute, italic = true },
 
-    -- ██  Modules / Namespaces
+    -- ██  模块/命名空间
     ["@module"] = { fg = c.blue },
+    ["@module.builtin"] = { fg = c.predefined },
     ["@namespace"] = { fg = c.blue },
     ["@label"] = { fg = c.fg_dim },
 
-    -- ██  Operators
+    -- ██  运算符：DEFAULT_OPERATION_SIGN
     ["@operator"] = { fg = c.operator },
 
-    -- ██  Tags (HTML/JSX)
+    -- ██  标签：DEFAULT_TAG / DEFAULT_ATTRIBUTE
     ["@tag"] = { fg = c.tag },
     ["@tag.attribute"] = { fg = c.attribute, italic = true },
     ["@tag.delimiter"] = { fg = c.punctuation },
 
-    -- ██  Markup
+    -- ██  Markup / Markdown：兼容 Neovim 新式 @markup.* capture
     ["@markup.strong"] = { bold = true },
     ["@markup.italic"] = { italic = true },
     ["@markup.strikethrough"] = { strikethrough = true },

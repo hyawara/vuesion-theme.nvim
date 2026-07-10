@@ -90,23 +90,25 @@ require("vuesion-theme").setup({
 
   -- 插件集成（以下插件开启 auto 后可自动识别）
   plugins = {
-    -- 全部启用（关闭后可手动按需开关）
-    all   = true,
+    -- 全部启用已注册的插件分组（未安装插件也会安全跳过）
+    all   = false,
     -- 自动识别已安装插件（依赖 lazy.nvim）
     auto  = true,
 
     -- 手动开关（all = false 时生效）
-    snacks          = true,
-    blink           = true,
-    gitsigns        = true,
-    bufferline      = true,
-    which_key       = true,
-    flash           = true,
-    mini            = true,
-    indent_blankline = true,
-    noice           = true,
-    trouble         = true,
-    dashboard       = true,
+    snacks          = false,
+    blink           = false,
+    -- blink.cmp Kind 图标颜色：theme = 使用本主题语义色；blink = 回退到 blink/PmenuKind 默认链
+    blink_kind_hl   = "theme",
+    gitsigns        = false,
+    bufferline      = false,
+    which_key       = false,
+    flash           = false,
+    mini            = false,
+    indent_blankline = false,
+    noice           = false,
+    trouble         = false,
+    dashboard       = false,
   },
 })
 ```
@@ -142,7 +144,22 @@ require("vuesion-theme").setup({
 })
 ```
 
-### 3. Lualine 主题
+
+### 3. blink.cmp Kind 图标颜色策略
+
+默认情况下，本主题会让 `BlinkCmpKind*` 使用与代码语义一致的颜色，例如函数、类名、字段、常量分别复用主题里的 `function_decl`、`class`、`function`、`constant`。如果你更希望交给 blink.cmp 的默认高亮链（通常回退到 `PmenuKind` / 用户自己的 blink 配置），可这样设置：
+
+```lua
+require("vuesion-theme").setup({
+  plugins = {
+    blink_kind_hl = "blink",
+  },
+})
+```
+
+`blink_kind_hl = "theme"` 是默认值，适合追求整体主题一致；`"blink"` 适合已经在 blink.cmp 或其他配置里维护补全图标颜色的用户。
+
+### 4. Lualine 主题
 
 ```lua
 require("lualine").setup({
