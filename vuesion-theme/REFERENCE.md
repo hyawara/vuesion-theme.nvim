@@ -5,6 +5,37 @@
 
 ---
 
+## 参考仓库
+
+- **原始 IntelliJ 主题仓库**：https://github.com/vuesion/intellij-theme
+- **本 Neovim 移植仓库**：https://github.com/hyawara/vuesion-theme.nvim
+- **架构参考 tokyonight.nvim**：https://github.com/folke/tokyonight.nvim
+
+### 获取原始配色文件
+
+```bash
+# 1. 克隆原始仓库
+git clone --depth 1 https://github.com/vuesion/intellij-theme.git
+
+# 2. 核心文件位置
+#    UI 配色：  resources/META-INF/vuesion_theme.theme.json
+#    语法配色： resources/META-INF/vuesion_theme.xml
+
+# 3. 更新后对比差异
+cd intellij-theme && git pull
+# 对比 vuesion_theme.xml 的 <colors> 段和 DEFAULT_* 有没有新变化
+# 对比 vuesion_theme.theme.json 的 UI 色有没有变化
+```
+
+### 原始文件说明
+
+| 文件 | 大小 | 行数 | 内容 |
+|------|------|------|------|
+| `vuesion_theme.theme.json` | 10.8KB | 430 | UI 界面配色（按钮、面板、标签、滚动条等） |
+| `vuesion_theme.xml` | 101.2KB | 3470 | 编辑器语法配色（继承 Darcula，覆盖差异部分） |
+
+---
+
 ## 目录
 
 1. [原始来源文件结构](#1-原始来源文件结构)
