@@ -88,14 +88,8 @@ require("vuesion-theme").setup({
   -- lualine 主题 section A 使用粗体
   lualine_bold = false,
 
-  -- 插件集成（以下插件开启 auto 后可自动识别）
+  -- 插件集成（默认全部关闭，手动逐一开启）
   plugins = {
-    -- 全部启用已注册的插件分组（未安装插件也会安全跳过）
-    all   = false,
-    -- 自动识别已安装插件（依赖 lazy.nvim）
-    auto  = true,
-
-    -- 手动开关（all = false 时生效）
     snacks          = false,
     blink           = false,
     -- blink.cmp Kind 图标颜色：theme = 使用本主题语义色；blink = 回退到 blink/PmenuKind 默认链
@@ -176,7 +170,7 @@ require("lualine").setup({
 | [snacks.nvim](https://github.com/folke/snacks.nvim) | `snacks.lua` | Picker 界面配色 |
 | [blink.cmp](https://github.com/Saghen/blink.cmp) | `blink.lua` | 补全菜单、文档窗口、Kind 图标 |
 | [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) | `git.lua` | Git 增删改标记 |
-| [bufferline.nvim](https://github.com/akinsho/bufferline.nvim) | `base.lua` | Tab 标签栏 |
+| [bufferline.nvim](https://github.com/akinsho/bufferline.nvim) | `bufferline.lua` | Tab 标签栏（需 `plugins.bufferline = true` 开启；关闭时由 bufferline 自身派生默认颜色） |
 | [which-key.nvim](https://github.com/folke/which-key.nvim) | `base.lua` | 快捷键弹窗 |
 | [flash.nvim](https://github.com/folke/flash.nvim) | `base.lua` | 快速跳转标签 |
 | [noice.nvim](https://github.com/folke/noice.nvim) | `base.lua` | 消息 UI 美化 |
